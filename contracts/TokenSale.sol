@@ -3,7 +3,7 @@ pragma solidity >=0.4.22 <0.7.0;
 import "./Token.sol";
 
 contract TokenSale {
-    address admin;
+    address payable admin;
     Token public tokenContract;
     uint256 public tokenPrice;
     uint256 public tokensSold;
@@ -22,7 +22,7 @@ contract TokenSale {
 
     function buyTokens(uint256 _numberOfTokens) public payable {
         require(msg.value == multiply(_numberOfTokens, tokenPrice));
-        require(tokenContract.getBalance(msg.sender) >= _numberOfTokens);
+        require(tokenContract.getBalance(address(this)) >= _numberOfTokens);
         require(tokenContract.transfer(msg.sender, _numberOfTokens));
 
         tokensSold += _numberOfTokens;
@@ -32,7 +32,7 @@ contract TokenSale {
 
     function endSale() public {
         require(msg.sender == admin);
-        require(tokenContract.transfer(admin, tokenContract.getBalance(msg.sender)));
+        require(tokenContract.transfer(admin, tokenContract.getBalance(address(this))));
 
         // UPDATE: Let's not destroy the contract here
         // Just transfer the balance to the admin
