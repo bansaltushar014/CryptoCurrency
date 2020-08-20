@@ -5,11 +5,7 @@ var noOfAdminTransferToken;
 var Eweb3;
 var account;
 
-window.onload = function AppInitialize() {
-    AppWeb3Connection();
-}
-
-function AppWeb3Connection() {
+window.onload = function AppWeb3Connection() {
     if (window.ethereum) {
         // here goes the request for the metamask
         Eweb3 = new Web3(ethereum);
