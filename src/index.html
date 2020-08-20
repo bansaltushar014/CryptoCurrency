@@ -9,78 +9,53 @@
         integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 
 <body>
 
-    <div>Home</div>
+    <div class="jumbotron">
+        <h2>CryptoCurrency</h2>
+        <p>
+            Admin is the person who creates the token and sell it, Here 1000000
+            token are avaliable, so with the below first form, as an admin you are allowed to transfer max 1000000
+            tokens to the TokenSale.sol contract.Choose different accounts in metamask for Admin transfer
+             transaction & for Buyer transaction.
 
-    <button onclick="buyToken(3)">btn</button>
+        </p>
+    </div>
 
-    <script>
-        var instance;
-        var Eweb3;
-        var account;
-        if (window.ethereum) {
-            // here goes the request for the metamask
-            Eweb3 = new Web3(ethereum);
-            console.log("Connected!");
-            ethereum.enable();
-        }
-        // Legacy dapp browsers...
-        else if (window.web3) {
-            if (web3.currentProvider) {
-                window.web3 = new Web3(web3.currentProvider);
-            } else {
-                window.web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:7545"));
-            }
-        }
-        // Non-dapp browsers...
-        else {
-            console.log('Non-Ethereum browser detected. You should consider trying MetaMask!');
-        }
+    <br> <br>
+    <div class="row">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-8">
+            <form onsubmit="return false">
+                <div class="form-group">
+                    <label for="token">Transfer token from Admin account:</label>
+                    <input type="text" class="form-control" required placeholder="Number of Token" id="adminToken">
+                </div>
+                <button type="submit" onclick="transferTokenToContract()" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+        <div class="col-sm-2"></div>
+    </div>
 
-        $.getJSON("TokenSale.json", function (r) {
-            // console.log(r);
-            // console.log(Eweb3);
-            console.log(Eweb3.version);
-            instance = new Eweb3.eth.Contract(r.abi, r.networks[5777].address);
-            console.log(instance);
-        })
-
-        function getAccount() {
-            // Load account data
-            Eweb3.eth.getCoinbase(function (err, acnt) {
-                if (err === null) {
-                    account = acnt;
-                    console.log(account);
-                }
-            })
-        }
-
-        function buyToken(noOfToken) {
-            Eweb3.eth.getCoinbase(function (err, acnt) {
-                if (err === null) {
-                    account = acnt;
-                    console.log(account);
-                }
-            })
-
-            instance.methods.buyTokens(noOfToken)
-                .send({
-                    from: "0xA2C0795d75914e16F184380c45D12b44DbE5BCdD",
-                    value: noOfToken * 1000000000000000,
-                    gas: 500000 // Gas limit
-                })
-                .then(result => {
-                    console.log(result);
-                })
-                .catch(e => {
-                    alert(JSON.stringify(e));
-                })
-        }
-
-    </script>
+    <br><br>
+    <div class="row">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-8">
+            <form onsubmit="return false">
+                <div class="form-group">
+                    <label for="token">Transfer token from Buyer account:</label>
+                    <input type="text" class="form-control" required placeholder="Number of Token" id="buyerToken">
+                </div>
+                <button type="submit" onclick="buyToken()" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+        <div class="col-sm-2"></div>
+    </div>
+    <br><br>
+    <script src="App.js"></script>
 </body>
 
 </html>
